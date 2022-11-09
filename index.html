@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tick Tack Toe on Air</title>
+  </head>
+  <body>
+    <noscript>
+      <p>
+        Sorry, this site requires Javascript for its functionality. Enjoy this
+        cat instead.
+      </p>
+      <img src="https://cataas.com/cat/cute" />
+    </noscript>
+    <div id="root"></div>
+    <script type="module" src="dist/index.js"></script>
+    <script type="text/javascript">
+      let src = new EventSource("sse");
+
+      src.onmessage = () => {
+        window.location.reload();
+      };
+
+      src.onerror = () => {
+        console.debug("[HOTRELOAD] error: server connection lost");
+      };
+    </script>
+  </body>
+</html>
