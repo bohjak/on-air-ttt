@@ -67,13 +67,15 @@ body {
 .cell {
   width: 100px;
   height: 100px;
-  border: thin black solid;
-}
-
-.cell.filled {
-  background: blue;
+  border: thin var(--accent-midtone) solid;
 }
 
 .cell.empty {
-  background: red;
+  background: var(--accent-darkest);
+}
+.cell.x {
+  background: var(--primary-dark);
+}
+.cell.o {
+  background: var(--secondary-dark);
 }

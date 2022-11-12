@@ -12,8 +12,8 @@ export const store = configureStore({
   },
 });
 
-type RootState = ReturnType<typeof store.getState>;
+export type RootState = ReturnType<typeof store.getState>;
 export const useSelector: TypedUseSelectorHook<RootState> = _useSelector;
 
-type AppDispatch = typeof store.dispatch;
+export type AppDispatch = typeof store.dispatch;
 export const useDispatch = () => _useDispatch<AppDispatch>();
