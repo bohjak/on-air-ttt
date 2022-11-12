@@ -1,13 +1,13 @@
-import { build, analyzeMetafile } from "esbuild";
+import { build } from "esbuild";
 
 build({
-  entryPoints: ["src/index.ts"],
+  entryPoints: ["src/index.tsx"],
   outdir: "dist",
   bundle: true,
   sourcemap: true,
-  minify: true,
-  metafile: true,
+  /* minify: true, */
+  /* metafile: true, */
 })
-  .then(({ metafile }) => analyzeMetafile(metafile))
+  /* .then(({ metafile }) => analyzeMetafile(metafile)) */
   .then(console.log)
   .catch(console.error);
