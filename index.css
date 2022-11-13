@@ -51,6 +51,10 @@
   box-sizing: border-box;
 }
 
+button {
+  cursor: pointer;
+}
+
 body {
   background: var(--shade-6);
   color: var(--shade-2);
@@ -68,14 +72,20 @@ body {
   width: 100px;
   height: 100px;
   border: thin var(--accent-midtone) solid;
+  background: var(--accent-darkest);
+  /* Disable when game is finished */
+  cursor: pointer;
+
+  font-weight: 700;
+  font-size: 5em;
+  font-family: sans;
 }
 
-.cell.empty {
-  background: var(--accent-darkest);
-}
 .cell.x {
-  background: var(--primary-dark);
+  color: var(--primary-dark);
+  cursor: default;
 }
 .cell.o {
-  background: var(--secondary-dark);
+  color: var(--secondary-dark);
+  cursor: default;
 }

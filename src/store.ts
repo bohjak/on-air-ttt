@@ -5,10 +5,12 @@ import {
   useSelector as _useSelector,
 } from "react-redux";
 import { fieldReducer } from "./field-slice";
+import { movesReducer } from "./moves-slice";
 
 export const store = configureStore({
   reducer: {
     field: fieldReducer,
+    moves: movesReducer,
   },
 });
 

@@ -1,8 +1,9 @@
 import React from "react";
 import { CellState, fieldAction, FieldState, GameStage } from "./field-slice";
+import { movesActions } from "./moves-slice";
 import { AppDispatch, RootState, useDispatch, useSelector } from "./store";
 
-// FIXME: this is all dumb and the state should be stored completely differentely
+// FIXME: this approach doesn't scale well with larger fields — especially if the winning slice is smaller than field dimensions — and the results aren't usable by a player AI
 
 const isX = (cell: CellState): boolean => cell === CellState.X;
 const isO = (cell: CellState): boolean => cell === CellState.O;
@@ -24,14 +25,11 @@ const checkColumns = (cells: FieldState["cells"]): boolean => {
   return false;
 };
 const checkDiags = (cells: FieldState["cells"]): boolean => {
-  // FIXME: all the other check functions are awful, but this one takes the cake;
   const diags: CellState[][] = [[], []];
   for (let i = 0; i < cells.length; ++i) {
     if (i % 4 === 0) diags[0].push(cells[i]);
+    if ((i + 2) % 4 === 0 && i % 8 !== 0) diags[1].push(cells[i]);
   }
-  diags[1].push(cells[2]);
-  diags[1].push(cells[4]);
-  diags[1].push(cells[6]);
   if (diags.some((diag) => diag.every(isX) || diag.every(isO))) return true;
   return false;
 };
@@ -63,6 +61,9 @@ const makeMove =
     }
     dispatch(fieldAction.select({ idx }));
 
+    dispatch(movesActions.move(idx));
+    // FIXME: add moves trimming
+
     field = getState().field;
     const res = checkEndCondition(field.cells);
     if (res != null) {
@@ -80,7 +81,9 @@ export const Field: React.FC = () => {
       key={i}
       className={`cell ${cellState.toLowerCase()}`}
       onClick={() => dispatch(makeMove(i))}
-    ></div>
+    >
+      {i}
+    </div>
   ));
   return <div className="field">{cells}</div>;
 };
