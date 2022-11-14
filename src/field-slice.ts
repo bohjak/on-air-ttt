@@ -1,4 +1,4 @@
-// TODO: rename to gameReducer or something
+// TODO: rename to gameSlice or something
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 // TODO: not sure this is the best way to do this
@@ -17,10 +17,15 @@ export enum CellState {
 
 export type Player = CellState.X | CellState.O;
 
+export type PossibleWin = number[];
+
 export interface FieldState {
   width: number;
   height: number;
+  streak: number;
   cells: CellState[];
+  possibleWinsX: PossibleWin[];
+  possibleWinsO: PossibleWin[];
   nextPlayer: Player;
   stage: GameStage;
 }
@@ -28,7 +33,10 @@ export interface FieldState {
 const initialState: FieldState = {
   width: 0,
   height: 0,
+  streak: 0,
   cells: [],
+  possibleWinsX: [],
+  possibleWinsO: [],
   nextPlayer: CellState.X,
   stage: GameStage.Init,
 };
@@ -45,6 +53,7 @@ export const fieldSlice = createSlice({
       const { w, h } = action.payload;
       state.width = w;
       state.height = h;
+      state.streak = Math.min(w, h); // TODO: get from payload
       state.cells = createCells(w, h);
       state.stage = GameStage.Progress;
     },
@@ -67,6 +76,8 @@ export const fieldSlice = createSlice({
 
     reset: (state) => {
       state.cells = createCells(state.width, state.height);
+      state.possibleWinsX = [];
+      state.possibleWinsO = [];
       state.nextPlayer = CellState.X;
       state.stage = GameStage.Progress;
     },
@@ -74,5 +85,4 @@ export const fieldSlice = createSlice({
 });
 
 export const fieldAction = fieldSlice.actions;
-
 export const fieldReducer = fieldSlice.reducer;

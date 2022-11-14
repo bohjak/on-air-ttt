@@ -1,9 +1,8 @@
 import React from "react";
 import { CellState, fieldAction, FieldState, GameStage } from "./field-slice";
-import { movesActions } from "./moves-slice";
 import { AppDispatch, RootState, useDispatch, useSelector } from "./store";
 
-// FIXME: this approach doesn't scale well with larger fields — especially if the winning slice is smaller than field dimensions — and the results aren't usable by a player AI
+// FIXME: this approach doesn't scale well with larger fields — especially if the winning slice is smaller than field dimensions — and the results aren't easily usable by a player AI
 
 const isX = (cell: CellState): boolean => cell === CellState.X;
 const isO = (cell: CellState): boolean => cell === CellState.O;
@@ -61,8 +60,7 @@ const makeMove =
     }
     dispatch(fieldAction.select({ idx }));
 
-    dispatch(movesActions.move(idx));
-    // FIXME: add moves trimming
+    /* dispatch(movesActions.move(idx)); */
 
     field = getState().field;
     const res = checkEndCondition(field.cells);
@@ -76,14 +74,21 @@ const makeMove =
 export const Field: React.FC = () => {
   const dispatch = useDispatch();
   const field = useSelector(({ field }) => field);
-  const cells = field.cells.map((cellState, i) => (
+  const renderCell = (cell: CellState, i: number) => (
     <div
       key={i}
-      className={`cell ${cellState.toLowerCase()}`}
+      className={`cell ${cell.toLowerCase()} ${field.stage.toLowerCase()}-${field.nextPlayer.toLowerCase()}`}
       onClick={() => dispatch(makeMove(i))}
+    ></div>
+  );
+  const cells = field.cells.map(renderCell);
+  return (
+    <div
+      className={`field ${
+        field.stage === GameStage.Progress && field.nextPlayer.toLowerCase()
+      }`}
     >
-      {i}
+      {cells}
     </div>
-  ));
-  return <div className="field">{cells}</div>;
+  );
 };
