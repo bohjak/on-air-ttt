@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "esbuild 'src/index.tsx' --outdir='dist' --bundle --sourcemap --minify",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest run ."
   },
   "keywords": [],
   "author": "",
