@@ -31,24 +31,28 @@ const makeMove =
     }
   };
 
-export const Field: React.FC = () => {
+const Cell: React.FC<{
+  idx: number;
+}> = ({ idx }) => {
   const dispatch = useDispatch();
-  const field = useSelector(({ field }) => field);
-  const renderCell = (cell: CellState, i: number) => (
-    <div
-      key={i}
-      className={`cell ${cell.toLowerCase()} ${field.stage.toLowerCase()}-${field.nextPlayer.toLowerCase()}`}
-      onClick={() => dispatch(makeMove(i))}
-    ></div>
+  const state = useSelector(({ field }) => field.cells[idx]);
+  const blur = useSelector(
+    ({ field }) =>
+      field.stage === GameStage.Tie ||
+      (field.stage === GameStage.Win && field.nextPlayer !== state)
   );
-  const cells = field.cells.map(renderCell);
   return (
     <div
-      className={`field ${
-        field.stage === GameStage.Progress && field.nextPlayer.toLowerCase()
-      }`}
-    >
-      {cells}
-    </div>
+      className={`cell ${state.toLowerCase()} ${blur && "blur"}`}
+      onClick={() => dispatch(makeMove(idx))}
+    ></div>
   );
+};
+
+export const Field: React.FC = () => {
+  const cells: JSX.Element[] = [];
+  for (let i = 0; i < 9; ++i) {
+    cells.push(<Cell key={i} idx={i} />);
+  }
+  return <div className={`field`}>{cells}</div>;
 };

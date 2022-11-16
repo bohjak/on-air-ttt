@@ -145,10 +145,7 @@ body {
   cursor: default;
 }
 
-.cell.o.win-x,
-.cell.x.win-o,
-.tie-x,
-.tie-o {
+.cell.blur {
   filter: blur(20px);
 }
 

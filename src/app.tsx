@@ -6,14 +6,14 @@ import { useDispatch, useSelector } from "./store";
 
 export const App: React.FC = () => {
   const dispatch = useDispatch();
-  const field = useSelector(({ field }) => field);
+  const stage = useSelector(({ field }) => field.stage === GameStage.Init);
   const initField = () => {
     dispatch(fieldAction.init({ w: 3, h: 3 }));
   };
 
   return (
     <section className="content">
-      {field.stage === GameStage.Init ? (
+      {stage ? (
         <Logo onClick={initField} />
       ) : (
         <div className="gameWrapper">
